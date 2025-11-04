@@ -45,7 +45,13 @@ uv run flask --app main run
 $ flask run --host=0.0.0.0
 
 # debug mode mit auto-reloading enablen
+# AUFPASSEN! es ist von relevanz von welchen directory aus man 'uv run flas --app <appname> run' aufruft!!
 flask --app hello run --debug
 uv run flask --app main run --debug
 
+# show help for flask cli
+ uv run flask --help
+
+# custom click command for flask CLI
+flask --app flaskr init-db
 
