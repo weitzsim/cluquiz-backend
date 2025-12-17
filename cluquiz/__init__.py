@@ -2,8 +2,12 @@ import os
 
 from flask import Flask
 from flask import url_for
+from flask import Response
 from . import db
 from . import auth
+import time
+
+
 
 def create_app(test_config=None):
     # create and configure the app
@@ -27,20 +31,42 @@ def create_app(test_config=None):
         pass
 
     db.init_app(app)
-    app.register_blueprint(auth.bp)
+    #app.register_blueprint(auth.bp)
+
+
+
+    started = time.time()   # Startzeit der App
+
+    @app.route("/healthz")
+    def healthz():
+       duration = time.time() - started
+
+       if duration > 15:
+           return Response(
+               f"error: {duration:.2f}",
+               status=500,
+               mimetype="text/plain"
+           )
+       else:
+           return Response(
+               "ok",
+               status=200,
+               mimetype="text/plain"
+           )
+
 
     # a simple page that says hello
-    @app.route('/hello')
+    @app.route('/helloinit')
     def hello():
-        return 'Hello, World!'
+        return "<p>Hello, World!</p>"
 
     @app.route("/")
     def hello_world():
-        return "<p>Hello, World!</p>"
+        return "<p>Hello, World! change</p>"
 
     @app.route('/questions/<int:count>')
     def show_questions(count):
-        return f'<p>Hello, World! wie viel questioins? -> {count}</p>'
+        return f'<p>HELLO, World! wie viel questioins? -> {count}</p>'
 
     @app.route('/user/<username>')
     def show_user_profile(username):
